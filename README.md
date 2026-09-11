@@ -28,7 +28,9 @@ Texas operates its own largely self-contained power grid, meaning it has limited
 
 ![Database Schema](screenshots/database_schema.png)
 
-The diagram above shows the database's schema design, which uses a single flat table rather than a star schema. This approach was chosen because the underlying data is fundamentally a single hourly time series (electricity demand, generation, and temperature) with no repeating categorical fields like organization, location, or job category that would benefit from being broken out into separate dimension tables. Splitting this data into multiple tables would add unnecessary complexity without any real analytical benefit, so a single table was used instead.
+* The diagram above shows the database's schema design, which uses a single flat table rather than a star schema. This approach was chosen because the underlying data is fundamentally a single hourly time series (electricity demand, generation, and temperature) with no repeating categorical fields like organization, location, or job category that would benefit from being broken out into separate dimension tables. Splitting this data into multiple tables would add unnecessary complexity without any real analytical benefit, so a single table was used instead.
+
+***
 
 # Data dictionary
 
