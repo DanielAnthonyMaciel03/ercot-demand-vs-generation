@@ -13,15 +13,15 @@ How does temperature affect electricity demand in Texas, and at what point does 
 ## Why This Matters
 
 Texas operates its own largely self-contained power grid, meaning it has limited ability to import power from neighboring states during periods of extreme demand. Understanding when and why the grid's safety margin gets thin, and whether that pattern is predictable based on temperature, is directly useful for reserve capacity planning, maintenance scheduling, and reliability risk management.
----
+
 # Technology Workflow
 
 ![Tech Workflow](screenshots/tech_workflow.png)
----
+
 # Data Schema
 
 ![Database Schema](screenshots/database_schema.png)
----
+
 
 
 
