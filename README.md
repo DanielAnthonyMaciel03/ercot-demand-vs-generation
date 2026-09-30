@@ -60,10 +60,10 @@ This exploration also surfaced an important structural issue: the EIA data came 
 
 ## Extraction
 
-The `scripts/` folder contains the Python scripts used to pull and transform both datasets:
+The [`scripts/`](scripts/) folder contains the Python scripts used to pull and transform both datasets:
 
-- `scripts/ercot.py` pulls five years of hourly electricity data from the EIA API for ERCOT (the Texas grid operator)
-- `scripts/noaa.py` pulls five years of hourly temperature data from NOAA for the Houston (IAH) weather station
+- [`scripts/ercot.py`](scripts/ercot.py) pulls five years of hourly electricity data from the EIA API for ERCOT (the Texas grid operator)
+- [`scripts/noaa.py`](scripts/noaa.py) pulls five years of hourly temperature data from NOAA for the Houston (IAH) weather station
 
 Both scripts handle pagination, since neither API returns more than a few thousand rows per request, and a multi-year hourly pull far exceeds that limit.
 
@@ -71,8 +71,8 @@ Both scripts handle pagination, since neither API returns more than a few thousa
 
 Once both datasets were pulled, a few transformation steps prepared them for merging:
 
-- `scripts/pivot.py` reshaped the EIA data from long format into wide format, turning each hour's four separate rows into a single row with four columns
-- `scripts/join.py` merged the reshaped EIA data with the cleaned NOAA data on their shared hourly timestamp, producing one combined table with both electricity and weather data for each hour
+- [`scripts/pivot.py`](scripts/pivot.py) reshaped the EIA data from long format into wide format, turning each hour's four separate rows into a single row with four columns
+- [`scripts/join.py`](scripts/join.py) merged the reshaped EIA data with the cleaned NOAA data on their shared hourly timestamp, producing one combined table with both electricity and weather data for each hour
 
 ## Loading and Cleaning
 
@@ -89,9 +89,9 @@ With the table structured correctly, the data was then checked and cleaned using
 - Checked for impossible values, such as negative demand or negative generation, none were found
 - Checked for duplicate timestamps, confirming each hour appeared exactly once
 - Checked for missing values across all columns, a small number of rows (9) were missing a `total_interchange` value and were removed, since this represented a negligible fraction of the dataset
-- Added a `cushion` column, calculated as `net_generation - demand`, to measure the grid's reserve margin for each hour
+- Added a `cushion` column, calculated as (`net_generation - demand`), to measure the grid's reserve margin for each hour
 
-All SQL used for loading, cleaning, and validation can be found within `sql/prep.sql`.
+All SQL used for loading, cleaning, and validation can be found within [`sql/prep.sql`](sql/prep.sql).
 
 This cleaned, structured table became the foundation for all further analysis, including the SQL views and DAX measures used in the final dashboard.
 
