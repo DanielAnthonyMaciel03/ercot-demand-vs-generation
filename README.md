@@ -139,3 +139,11 @@ And the monthly view for that same year, with February highlighted:
 ![Monthly cushion, 2021](screenshots/ercot_2021_freeze_1.PNG)
 
 Winter Storm Uri, the historic Texas freeze, struck over roughly six days in mid-February 2021. Even though it affected only a fraction of the month, it was severe enough that February 2021 alone comes close to matching an entire month like July for average cushion, despite July's poor showing being driven by sustained heat across all 31 days, not a single short event. This highlights just how extreme the storm's impact was, a handful of days pulled a whole month's average down to nearly match a month that struggled for its full duration.
+
+## Cushion by Hour of Day
+
+Going back to the high-level, five-year overview, a clear daily pattern emerges: generation typically keeps pace with, or even exceeds, demand during the afternoon hours, roughly the early-to-mid afternoon window, which lines up closely with peak solar generation output. Outside of that window, particularly overnight and into the early morning, demand consistently exceeds generation, with the tightest margins showing up between midnight and 5 AM, and again in the late evening hours.
+
+![Hourly cushion](screenshots/ercot_overview_hour.PNG)
+
+This suggests that time of day, not just temperature, plays an independent role in how much reserve margin the grid has at any given moment. The consistent dip overnight is likely tied to the complete absence of solar generation during those hours, combined with demand patterns that don't fall off enough to offset it.
