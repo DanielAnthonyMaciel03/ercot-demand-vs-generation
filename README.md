@@ -114,4 +114,4 @@ The goal of all of this wasn't just to make charts, it was to find a specific, u
 All SQL queries used for this analysis can be found in within [`sql/analysis.sql`](sql/analysis.sql).
 
 
-
+![ERCOT Dashboard Overview](screenshots/ercot_whole_dash.PNG)
