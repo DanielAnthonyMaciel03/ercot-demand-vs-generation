@@ -97,7 +97,21 @@ This cleaned, structured table became the foundation for all further analysis, i
 
 ***
 
+# Data Analysis
 
+Once the data was cleaned and loaded, the next step was figuring out what the numbers actually meant and whether they answered the original question: does temperature affect how much electricity Texas uses, and does that ever push the grid close to running out of extra power?
+
+To answer this, a new column called `cushion` was created. This is just the amount of electricity generated minus the amount of electricity actually used, for every single hour. A positive cushion means there was extra power to spare that hour. A negative cushion means generation came in under what was actually needed, the closer to a big negative number, the more strain the grid was under.
+
+From there, a few different angles were explored to find real patterns in the data:
+
+- **Temperature vs. cushion:** hours were grouped into 5-degree temperature ranges, then averaged, to see whether cushion tends to shrink when it gets very hot or very cold outside
+- **Month-by-month trend:** cushion was averaged by month across all five years, to see which periods of time were generally higher-risk, and to make it easy to spot and zoom into specific events, like the February 2021 winter storm
+- **Hour-of-day pattern:** cushion was also averaged by hour of the day, to check whether certain times, like overnight hours, are consistently riskier than others, regardless of season
+
+The goal of all of this wasn't just to make charts, it was to find a specific, usable takeaway: is there a clear range of temperatures where the grid is safest, and a range where it starts getting genuinely risky? And if so, that's the kind of information a grid operator could actually use to plan ahead, for example, making sure extra backup power is ready before a heat wave or cold snap hits, instead of finding out too late.
+
+All SQL queries used for this analysis can be found in within [`sql/analysis.sql`](sql/analysis.sql).
 
 
 
