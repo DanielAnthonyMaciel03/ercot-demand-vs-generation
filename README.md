@@ -82,7 +82,7 @@ Once the merged dataset was ready, it was loaded into a PostgreSQL database for 
 - Column names were cleaned up during import (for example, removing spaces from fields like "Net generation") to make them easier to reference in SQL queries
 - A duplicate timestamp column left over from the merge was identified and removed, keeping `period` as the single primary key for the table
 
-![Sample of loaded ERCOT data in PostgreSQL](screenshots/ercot_postgreSQL_sample.png)
+![Sample of loaded ERCOT data in PostgreSQL](screenshots/ercot_postgreSQL_sample.PNG)
 
 With the table structured correctly, the data was then checked and cleaned using SQL:
 
