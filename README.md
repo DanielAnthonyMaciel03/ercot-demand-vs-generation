@@ -113,5 +113,29 @@ The goal of all of this wasn't just to make charts, it was to find a specific, u
 
 All SQL queries used for this analysis can be found in within [`sql/analysis.sql`](sql/analysis.sql).
 
+***
+
+# Findings and Dashboard Overview
 
 ![ERCOT Dashboard Overview](screenshots/ercot_whole_dash.PNG)
+
+
+## Month vs. Cushion
+
+With no filter applied, this chart shows a high-level, five-year average, one cushion value per month, combining data from 2020 through 2024. From this view, July stands out as the single worst month on average, the month where demand consistently exceeded generation by the widest margin across all five years.
+
+Looking at the hour-of-day chart alongside it, also unfiltered, a separate pattern emerges: across all five years, hours 0 through 5 and 20 through 23 consistently show the grid's tightest margins, generation falling short of demand most often overnight and in the late evening.
+
+Both charts can be drilled down further. Selecting a specific year filters the monthly view to just that year, and clicking a specific month filters the hourly view down to that month alone, making it possible to see whether a particular month is driving the overall average up or down, rather than relying on the five-year blend alone.
+
+One interesting contrast worth calling out: July shows the worst average cushion by month, yet the temperature-vs-cushion chart shows the opposite pattern, cushion is actually worse in **cold** temperatures than hot ones. This isn't a contradiction, it's a reminder that "worst month on average" and "worst temperature range" are measuring two different things. July's poor showing is likely driven by sustained high demand from consistent summer heat across the *entire* month, while the far more extreme cold-weather readings are concentrated in a small number of specific hours, mainly during the February 2021 freeze, which pull the temperature-based average down sharply for that narrow range, without dominating a full month's average the way July's heat does.
+
+For example, here is the same hour-of-day chart drilled down specifically to February 2021, compared against the five-year average shown above:
+
+![Hour of day cushion, February 2021](screenshots/ercot_2021_freeze_2.PNG)
+
+And the monthly view for that same year, with February highlighted:
+
+![Monthly cushion, 2021](screenshots/ercot_2021_freeze_1.PNG)
+
+Winter Storm Uri, the historic Texas freeze, struck over roughly six days in mid-February 2021. Even though it affected only a fraction of the month, it was severe enough that February 2021 alone comes close to matching an entire month like July for average cushion, despite July's poor showing being driven by sustained heat across all 31 days, not a single short event. This highlights just how extreme the storm's impact was, a handful of days pulled a whole month's average down to nearly match a month that struggled for its full duration.
