@@ -74,10 +74,26 @@ Once both datasets were pulled, a few transformation steps prepared them for mer
 - `scripts/pivot.py` reshaped the EIA data from long format into wide format, turning each hour's four separate rows into a single row with four columns
 - `scripts/join.py` merged the reshaped EIA data with the cleaned NOAA data on their shared hourly timestamp, producing one combined table with both electricity and weather data for each hour
 
-## A Note on Scope
+## Loading and Cleaning
 
-This stage handled structural transformation only, reshaping and merging the data into a usable format. It did not include traditional data cleaning, such as handling nulls, outliers, or invalid values. That cleaning is handled separately in PostgreSQL using SQL, and is documented in the next section.
+Once the merged dataset was ready, it was loaded into a PostgreSQL database for structured storage and analysis.
 
+- The final merged CSV was imported into a single table, `ercot_hourly_data`, matching the column structure produced by the transformation step
+- Column names were cleaned up during import (for example, removing spaces from fields like "Net generation") to make them easier to reference in SQL queries
+- A duplicate timestamp column left over from the merge was identified and removed, keeping `period` as the single primary key for the table
+
+![Sample of loaded ERCOT data in PostgreSQL](screenshots/ercot_postgreSQL_sample.png)
+
+With the table structured correctly, the data was then checked and cleaned using SQL:
+
+- Checked for impossible values, such as negative demand or negative generation, none were found
+- Checked for duplicate timestamps, confirming each hour appeared exactly once
+- Checked for missing values across all columns, a small number of rows (9) were missing a `total_interchange` value and were removed, since this represented a negligible fraction of the dataset
+- Added a `cushion` column, calculated as `net_generation - demand`, to measure the grid's reserve margin for each hour
+
+All SQL used for loading, cleaning, and validation can be found within `sql/prep.sql`.
+
+This cleaned, structured table became the foundation for all further analysis, including the SQL views and DAX measures used in the final dashboard.
 
 ***
 
