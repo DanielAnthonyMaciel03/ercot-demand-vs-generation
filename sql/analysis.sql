@@ -37,3 +37,17 @@ SELECT
 FROM ercot_hourly_data
 GROUP BY temp_bucket
 ORDER BY temp_bucket;
+
+
+CREATE VIEW view_hourly_with_month AS
+SELECT
+  period,
+  DATE_TRUNC('month', period) AS month,
+  EXTRACT(YEAR FROM period) AS year,
+  EXTRACT(DAY FROM period) AS day_of_month,
+  EXTRACT(HOUR FROM period) AS hour_of_day,
+  demand,
+  net_generation,
+  cushion,
+  temperature
+FROM ercot_hourly_data;

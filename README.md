@@ -34,8 +34,6 @@ Texas operates its own largely self-contained power grid, meaning it has limited
 
 # Data dictionary
 
-## Data Dictionary
-
 | Column Name | Data Type | Description |
 |---|---|---|
 | `period` | timestamp | The hour the reading corresponds to (UTC). Serves as the primary key. |
@@ -105,13 +103,14 @@ To answer this, a new column called `cushion` was created. This is just the amou
 
 From there, a few different angles were explored to find real patterns in the data:
 
-- **Temperature vs. cushion:** hours were grouped into 5-degree temperature ranges, then averaged, to see whether cushion tends to shrink when it gets very hot or very cold outside
 - **Month-by-month trend:** cushion was averaged by month across all five years, to see which periods of time were generally higher-risk, and to make it easy to spot and zoom into specific events, like the February 2021 winter storm
 - **Hour-of-day pattern:** cushion was also averaged by hour of the day, to check whether certain times, like overnight hours, are consistently riskier than others, regardless of season
+- **Temperature vs. cushion:** hours were grouped into 5-degree temperature ranges, then averaged, to see whether cushion tends to shrink when it gets very hot or very cold outside
+
 
 The goal of all of this wasn't just to make charts, it was to find a specific, usable takeaway: is there a clear range of temperatures where the grid is safest, and a range where it starts getting genuinely risky? And if so, that's the kind of information a grid operator could actually use to plan ahead, for example, making sure extra backup power is ready before a heat wave or cold snap hits, instead of finding out too late.
 
-All SQL queries used for this analysis can be found in within [`sql/analysis.sql`](sql/analysis.sql).
+All SQL queries used for this analysis can be found within [`sql/analysis.sql`](sql/analysis.sql).
 
 ***
 
@@ -147,3 +146,32 @@ Going back to the high-level, five-year overview, a clear daily pattern emerges:
 ![Hourly cushion](screenshots/ercot_overview_hour.PNG)
 
 This suggests that time of day, not just temperature, plays an independent role in how much reserve margin the grid has at any given moment. The consistent dip overnight is likely tied to the complete absence of solar generation during those hours, combined with demand patterns that don't fall off enough to offset it.
+
+
+## Cushion by Temperature
+
+![Average cushion by temperature](screenshots/ercot_temp.PNG)
+
+This chart groups every hour across all five years into 5-degree temperature ranges and shows the average cushion for each. The pattern is clear: cushion stays close to zero, the grid's healthiest range, somewhere between roughly 45°F and 70°F. Outside that range, in both directions, cushion gets worse, but the effect is far more severe on the cold side. The coldest temperature ranges show average cushion values as low as -774, while the hottest ranges only drop to around -295.
+
+This is the core finding of the project: extreme temperatures, and extreme cold in particular, are strongly associated with the grid's reserve margin shrinking.
+
+## Average Hourly Cushion and Generation Shortfall Rate
+
+![Average cushion and percent of hours with negative cushion](screenshots/ercot_stats.PNG)
+
+Across the full five-year dataset, the average hourly cushion comes out to about -111 megawatthours, a small number relative to typical hourly demand, which generally runs in the tens of thousands of megawatthours. On its own, this suggests the grid usually runs close to balanced.
+
+However, a closer look shows that generation fell short of demand in 59.8% of all hours over the five-year period. In other words, a small negative cushion is actually the more common state, not the exception, it's just small enough in magnitude most of the time that it doesn't represent a real reliability risk. This is a normal part of grid operation, driven by things like transmission losses and minor timing differences between how demand and generation are measured, rather than a sign of chronic shortage.
+
+What changes during events like the February 2021 freeze isn't that shortfalls start happening, they're already common, it's how severe those shortfalls become.
+
+# Final Recommendations
+
+**Prepare additional reserve capacity ahead of forecasted temperature extremes.** As expected, extreme temperatures, both hot and cold, reduce the grid's reserve margin, with cold weather having a notably more severe effect than heat. Preparing additional reserve capacity ahead of forecasted temperature extremes, particularly cold snaps, is a reasonable and fairly intuitive response to this finding.
+
+**Focus on overnight hours when forecasting energy generation.** Regardless of season or temperature, cushion is consistently at its tightest between midnight and 5 AM, and again in the late evening, a pattern that holds true across all five years, not just during extreme weather events. This suggests the grid has a harder time keeping generation ahead of demand specifically during these hours, likely tied to the complete absence of solar generation overnight, combined with demand that doesn't fall off enough to compensate. Unlike seasonal or weather-driven risk, which is relatively easy to anticipate and plan around, this overnight pattern is a structural, recurring gap that shows up regardless of conditions, suggesting it may be under-accounted for in current planning, and represents a more actionable, specific opportunity for improvement than weather preparedness alone.
+
+**Use short-duration extreme events as their own planning category, separate from seasonal averages.** February 2021 showed that a brief, severe event can rival the cumulative strain of an entire month of sustained heat, like July's. Extreme-event readiness should be planned independently from general seasonal capacity planning, since a short freeze can concentrate a month's worth of risk into just a few days.
+
+**Calibrate monitoring around severity, not just frequency.** Generation fell short of demand in roughly 60% of all hours across the five-year dataset, meaning a small negative cushion is the normal state, not a warning sign on its own. Alerting and planning should focus on how severe a shortfall is relative to typical conditions, rather than treating any instance of negative cushion as abnormal.
