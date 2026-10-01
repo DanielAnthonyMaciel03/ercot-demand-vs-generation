@@ -1,5 +1,5 @@
 
--- Created a saved view isolating just the February 2021 winter storm period
+-- Isolates the February 2021 winter storm period for close inspection of the grid's worst crisis event
 CREATE VIEW view_feb2021_freeze AS
 SELECT
   period,
@@ -12,8 +12,7 @@ WHERE period BETWEEN '2021-02-10' AND '2021-02-20'
 ORDER BY period;
 
 
-
--- Created a saved view summarizing average and worst cushion by month across all five years
+-- Summarizes average temperature, average cushion, and worst cushion by month across all five years
 CREATE VIEW view_monthly_summary AS
 SELECT
   DATE_TRUNC('month', period) AS month,
@@ -26,8 +25,7 @@ GROUP BY month, year
 ORDER BY month;
 
 
-
--- Created a saved view showing average and worst cushion grouped by temperature bucket
+-- Groups every hour into 5-degree temperature ranges to reveal the relationship between temperature and cushion
 CREATE VIEW view_cushion_by_temp_bucket AS
 SELECT
   FLOOR(temperature / 5) * 5 AS temp_bucket,
@@ -39,6 +37,7 @@ GROUP BY temp_bucket
 ORDER BY temp_bucket;
 
 
+-- Adds year, month, day, and hour breakdowns to the hourly data, used to power the hour-of-day chart and its drill-down by month
 CREATE VIEW view_hourly_with_month AS
 SELECT
   period,
